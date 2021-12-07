@@ -32,12 +32,9 @@ public class Day07 : IMDay
 
         for (var moveTo = crabPositions.Min(); moveTo <= crabPositions.Max(); moveTo++)
         {
-            var totalFuelCost = 0;
-            foreach (var position in crabPositions)
-            {
-                int steps = Math.Abs(position - moveTo);
-                totalFuelCost += fuelCalculation(steps);
-            }
+            var totalFuelCost = crabPositions
+                .Select(p => fuelCalculation(Math.Abs(p - moveTo)))
+                .Sum();
             leastFuelUsage = Math.Min(leastFuelUsage, totalFuelCost);
         }
 
