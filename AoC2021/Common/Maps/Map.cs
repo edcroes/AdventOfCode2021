@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace AoC2021.Common.Maps;
+﻿namespace AoC2021.Common.Maps;
 
 public class Map<T>
 {

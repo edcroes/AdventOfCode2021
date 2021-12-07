@@ -1,6 +1,4 @@
-﻿using AoC2021.Common.Maps;
-
-namespace AoC2021.Day04
+﻿namespace AoC2021.Day04
 {
     public class BingoCard
     {
