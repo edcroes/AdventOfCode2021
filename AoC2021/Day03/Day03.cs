@@ -24,40 +24,21 @@ public class Day03 : IMDay
     public async Task<string> GetAnswerPart2()
     {
         var numbers = await GetNumbers();
-        Console.WriteLine($"Oxy {GetOxygenGeneratorRating(numbers)}");
-        Console.WriteLine($"CO2 {GetCO2ScrubberRating(numbers)}");
-        var result = GetOxygenGeneratorRating(numbers) * GetCO2ScrubberRating(numbers);
 
+        var result = GetOxygenGeneratorRating(numbers) * GetCO2ScrubberRating(numbers);
         return result.ToString();
     }
 
-    private static int GetOxygenGeneratorRating(string[] numbers)
+    private static int GetOxygenGeneratorRating(string[] numbers) => GetRating(numbers, b => b ? '1' : '0');
+
+    private static int GetCO2ScrubberRating(string[] numbers) => GetRating(numbers, b => b ? '0' : '1');
+
+    private static int GetRating(string[] numbers, Func<bool, char> convertBitToChar)
     {
         var remainingNumbers = numbers.ToArray();
         for (var i = 0; i < numbers[0].Length; i++)
         {
-            var mostCommonBit = GetMostCommonBit(remainingNumbers, i) ? '1' : '0';
-            remainingNumbers = remainingNumbers.Where(n => n.ToCharArray()[i] == mostCommonBit).ToArray();
-            Console.WriteLine($"\r\nRemaining after {i}");
-            foreach (var r in remainingNumbers)
-            {
-                Console.WriteLine($"\t{r}");
-            }
-            if (remainingNumbers.Length == 1)
-            {
-                return Convert.ToInt16(remainingNumbers[0], 2);
-            }
-        }
-
-        return 0;
-    }
-
-    private static int GetCO2ScrubberRating(string[] numbers)
-    {
-        var remainingNumbers = numbers.ToArray();
-        for (var i = 0; i < numbers[0].Length; i++)
-        {
-            var leastCommonBit = GetMostCommonBit(remainingNumbers, i) ? '0' : '1';
+            var leastCommonBit = convertBitToChar(GetMostCommonBit(remainingNumbers, i));
             remainingNumbers = remainingNumbers.Where(n => n.ToCharArray()[i] == leastCommonBit).ToArray();
 
             if (remainingNumbers.Length == 1)
