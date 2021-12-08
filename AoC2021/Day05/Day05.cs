@@ -2,14 +2,7 @@
 
 public class Day05 : IMDay
 {
-    private readonly string _linesFile;
-
-    public Day05(string linesFile)
-    {
-        _linesFile = linesFile;
-    }
-
-    public Day05() : this("Day05\\input.txt") { }
+    public string FilePath { private get; init; } = "Day05\\input.txt";
 
     public async Task<string> GetAnswerPart1()
     {
@@ -55,7 +48,7 @@ public class Day05 : IMDay
     }
 
     private async Task<IEnumerable<Line>> GetLines() =>
-        (await File.ReadAllLinesAsync(_linesFile))
+        (await File.ReadAllLinesAsync(FilePath))
             .Where(l => !string.IsNullOrWhiteSpace(l))
             .Select(l => l.Split(" -> "))
             .Select(a => new Line(ParsePoint(a[0]), ParsePoint(a[1])));

@@ -2,14 +2,7 @@
 
 public class Day04 : IMDay
 {
-    private readonly string _bingoFile;
-
-    public Day04(string bingoFile)
-    {
-        _bingoFile = bingoFile;
-    }
-
-    public Day04() : this("Day04\\input.txt") { }
+    public string FilePath { private get; init; } = "Day04\\input.txt";
 
     public async Task<string> GetAnswerPart1()
     {
@@ -66,13 +59,13 @@ public class Day04 : IMDay
     }
 
     private async Task<IEnumerable<int>> ParseNumbers() =>
-        (await File.ReadAllLinesAsync(_bingoFile))
+        (await File.ReadAllLinesAsync(FilePath))
             .First()
             .Split(',')
             .Select(n => int.Parse(n));
 
     private async Task<BingoCard[]> ParseBingoCards() =>
-        (await File.ReadAllTextAsync(_bingoFile))
+        (await File.ReadAllTextAsync(FilePath))
             .Replace("\r\n", "\n")
             .Split("\n\n")
             .Where(s => !string.IsNullOrWhiteSpace(s))

@@ -2,6 +2,8 @@
 
 public class Day01 : IMDay
 {
+    public string FilePath { private get; init; } = "Day01\\input.txt";
+
     public async Task<string> GetAnswerPart1()
     {
         var depths = await GetDepths();
@@ -25,8 +27,8 @@ public class Day01 : IMDay
             .ToString();
     }
 
-    private static async Task<int[]> GetDepths() =>
-        (await File.ReadAllLinesAsync("Day01\\input.txt"))
+    private async Task<int[]> GetDepths() =>
+        (await File.ReadAllLinesAsync(FilePath))
             .Where(l => !string.IsNullOrEmpty(l))
             .Select(l => int.Parse(l))
             .ToArray();

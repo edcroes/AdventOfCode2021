@@ -2,14 +2,7 @@
 
 public class Day03 : IMDay
 {
-    private readonly string _file;
-
-    public Day03(string file)
-    {
-        _file = file;
-    }
-
-    public Day03() : this("Day03\\input.txt") { }
+    public string FilePath { private get; init; } = "Day03\\input.txt";
 
     public async Task<string> GetAnswerPart1()
     {
@@ -86,7 +79,7 @@ public class Day03 : IMDay
     }
 
     private async Task<string[]> GetNumbers() =>
-        (await File.ReadAllLinesAsync(_file))
+        (await File.ReadAllLinesAsync(FilePath))
             .Where(l => !string.IsNullOrEmpty(l))
             .ToArray();
 }

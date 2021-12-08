@@ -2,14 +2,7 @@
 
 public class Day08 : IMDay
 {
-    private readonly string _file;
-
-    public Day08(string file)
-    {
-        _file = file;
-    }
-
-    public Day08() : this("Day08\\input.txt") { }
+    public string FilePath { private get; init; } = "Day08\\input.txt";
 
     public async Task<string> GetAnswerPart1()
     {
@@ -32,7 +25,7 @@ public class Day08 : IMDay
     }
 
     private async Task<IEnumerable<Display>> GetDisplays() =>
-        (await File.ReadAllLinesAsync(_file))
+        (await File.ReadAllLinesAsync(FilePath))
             .Select(l => l.Split("|"))
             .Select(a => new Display(a[0].Split(' ', StringSplitOptions.RemoveEmptyEntries), a[1].Split(' ', StringSplitOptions.RemoveEmptyEntries)));
 }

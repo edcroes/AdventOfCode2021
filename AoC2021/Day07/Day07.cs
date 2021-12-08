@@ -2,14 +2,7 @@
 
 public class Day07 : IMDay
 {
-    private readonly string _crabFile;
-
-    public Day07(string crabFile)
-    {
-        _crabFile = crabFile;
-    }
-
-    public Day07() : this("Day07\\input.txt") { }
+    public string FilePath { private get; init; } = "Day07\\input.txt";
 
     public async Task<string> GetAnswerPart1()
     {
@@ -42,7 +35,7 @@ public class Day07 : IMDay
     }
 
     private async Task<int[]> GetCrabPositions() =>
-        (await File.ReadAllTextAsync(_crabFile))
+        (await File.ReadAllTextAsync(FilePath))
             .Split(',')
             .Select(l => int.Parse(l))
             .OrderBy(l => l)

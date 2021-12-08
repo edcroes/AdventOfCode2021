@@ -4,14 +4,8 @@ public class Day06 : IMDay
 {
     private const int PregnancyPeriod = 7;
     private const int FirstPregnancyExtraPeriod = 2;
-    private readonly string _fishFile;
 
-    public Day06(string fishFile)
-    {
-        _fishFile = fishFile;
-    }
-
-    public Day06() : this("Day06\\input.txt") { }
+    public string FilePath { private get; init; } = "Day06\\input.txt";
 
     public async Task<string> GetAnswerPart1()
     {
@@ -51,7 +45,7 @@ public class Day06 : IMDay
     }
 
     private async Task<List<int>> GetFish() =>
-        (await File.ReadAllTextAsync(_fishFile))
+        (await File.ReadAllTextAsync(FilePath))
             .Split(',')
             .Select(l => int.Parse(l))
             .ToList();
