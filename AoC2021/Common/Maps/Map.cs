@@ -27,11 +27,11 @@ public class Map<T>
 
     public T? GetValueOrDefault(Point point) => GetValueOrDefault(point.X, point.Y);
 
-    public T? GetValueOrDefault(int x, int y)
+    public T? GetValueOrDefault(int x, int y, T? defaultValue = default)
     {
         if (x < 0 || x >= SizeX || y < 0 || y >= SizeY)
         {
-            return default;
+            return defaultValue;
         }
 
         return GetValue(x, y);
@@ -138,6 +138,32 @@ public class Map<T>
         }
     }
 
+    public IEnumerable<Point> GetNeighbors(Point point)
+    {
+        var neighbors = new Point[]
+        {
+                new Point(point.X - 1, point.Y),
+                new Point(point.X, point.Y - 1),
+                new Point(point.X + 1, point.Y),
+                new Point(point.X, point.Y + 1)
+        };
+
+        return neighbors.Where(p => Contains(p));
+    }
+
+    public int NumberOfStraightNeighborsThatMatch(Point point, Func<T, T?, bool> matcher, T? outOfBoundsValue = default)
+    {
+        var neighbors = new Point[]
+        {
+                new Point(point.X - 1, point.Y),
+                new Point(point.X, point.Y - 1),
+                new Point(point.X + 1, point.Y),
+                new Point(point.X, point.Y + 1)
+        };
+
+        return neighbors.Count(n => matcher(GetValue(point), GetValueOrDefault(n.X, n.Y, outOfBoundsValue)));
+    }
+
     public int NumberOfStraightNeighborsThatMatch(Point point, T valueToMatch)
     {
         var neighbors = new Point[]
@@ -224,4 +250,6 @@ public class Map<T>
 
         return false;
     }
+
+    public bool Contains(Point point) => point.X >= 0 && point.X < SizeX && point.Y >= 0 && point.Y < SizeY;
 }
