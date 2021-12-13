@@ -16,10 +16,8 @@ public class Day12 : IMDay
             foreach (var path in paths.Where(p => !HasEnded(p)).ToArray())
             {
                 List<List<string>> newPaths = new();
-                var pathLinks = links.Where(l => l.From == path.Last() || l.To == path.Last());
-                foreach (var link in pathLinks)
+                foreach (var nextCave in links[path.Last()])
                 {
-                    var nextCave = link.From == path.Last() ? link.To : link.From;
                     if (IsPathAllowed(path, nextCave))
                     {
                         newPaths.Add(new(path) { nextCave });
@@ -44,10 +42,10 @@ public class Day12 : IMDay
             foreach (var path in paths.Where(p => !HasEnded(p)).ToArray())
             {
                 List<string> newPaths = new();
-                var pathLinks = links.Where(l => path.EndsWith($"-{l.From}") || path.EndsWith($"-{l.To}"));
-                foreach (var link in pathLinks)
+                var lastCave = path.Substring(path.LastIndexOf('-') + 1);
+
+                foreach (var nextCave in links[lastCave])
                 {
-                    var nextCave = path.EndsWith($"-{link.To}") ? link.From : link.To;
                     if (IsPathAllowed(path, nextCave))
                     {
                         var newPath = string.Empty;
@@ -74,14 +72,44 @@ public class Day12 : IMDay
     private static bool HasEnded(string path) => path.EndsWith("-end");
 
     private static bool IsPathAllowed(List<string> path, string nextCave) =>
-        nextCave != "start" && (nextCave == nextCave.ToUpper() || !path.Contains(nextCave));
+        nextCave == nextCave.ToUpper() || !path.Contains(nextCave);
 
     private static bool IsPathAllowed(string path, string nextCave) =>
-        nextCave != "start" && (nextCave == nextCave.ToUpper() || path[0] != '1' || !path.Contains($"-{nextCave}-"));
+        nextCave == nextCave.ToUpper() || path[0] != '1' || !path.Contains($"-{nextCave}-");
 
-    private async Task<IEnumerable<Link>> GetLinks() =>
-        (await File.ReadAllLinesAsync(FilePath))
+    private async Task<Dictionary<string, List<string>>> GetLinks()
+    {
+        var rawLinks = (await File.ReadAllLinesAsync(FilePath))
             .Where(l => !string.IsNullOrWhiteSpace(l))
-            .Select(l => l.Split('-'))
-            .Select(l => new Link(l[0], l[1]));
+            .Select(l => l.Split('-'));
+        Dictionary<string, List<string>> links = new();
+
+        foreach (var link in rawLinks)
+        {
+            if (link[1] != "start" && link[0] != "end")
+            {
+                AddOrUpdate(links, link[0], link[1]);
+            }
+
+            if (link[0] != "start" && link[1] != "end")
+            {
+                AddOrUpdate(links, link[1], link[0]);
+            }
+        }
+
+        return links;
+    }
+
+    private static void AddOrUpdate(Dictionary<string, List<string>> dictionary, string key, string value)
+    {
+        if (!dictionary.ContainsKey(key))
+        {
+            dictionary.Add(key, new());
+        }
+
+        if (!dictionary[key].Contains(value))
+        {
+            dictionary[key].Add(value);
+        }
+    }
 }
