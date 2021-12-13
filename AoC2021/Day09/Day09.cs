@@ -42,7 +42,7 @@ public class Day09 : IMDay
         while (nextPoints.Any())
         {
             nextPoints = nextPoints
-                .SelectMany(p => _map.GetNeighbors(p).Where(n => IsHigherButNotTop(p, n)))
+                .SelectMany(p => _map.GetStraightNeighbors(p).Where(n => IsHigherButNotTop(p, n)))
                 .Distinct()
                 .Where(p => !basinPoints.Contains(p))
                 .ToList();
