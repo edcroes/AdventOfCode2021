@@ -85,7 +85,7 @@ public class Map<T>
         RotateRight();
     }
 
-    public void MirrorHorizontal()
+    public Map<T> MirrorHorizontal()
     {
         var newMap = new T[SizeY, SizeX];
 
@@ -98,13 +98,16 @@ public class Map<T>
         }
 
         _map = newMap;
+        return this;
     }
 
-    public void MirrorVertical()
+    public Map<T> MirrorVertical()
     {
         MirrorHorizontal();
         RotateRight();
         RotateRight();
+
+        return this;
     }
 
     public void DistributeChaos(T aliveValue, Func<bool, int, T> getNewValue)
@@ -138,7 +141,7 @@ public class Map<T>
         }
     }
 
-    public IEnumerable<Point> GetNeighbors(Point point)
+    public IEnumerable<Point> GetStraightNeighbors(Point point)
     {
         var neighbors = new Point[]
         {
@@ -149,6 +152,26 @@ public class Map<T>
         };
 
         return neighbors.Where(p => Contains(p));
+    }
+
+    public IEnumerable<Point> GetStraightAndDiagonalNeighbors(Point point)
+    {
+        List<Point> neighbors = new();
+
+        for (int y = Math.Max(point.Y - 1, 0); y <= point.Y + 1 && y < SizeY; y++)
+        {
+            for (int x = Math.Max(point.X - 1, 0); x <= point.X + 1 && x < SizeX; x++)
+            {
+                if (y == point.Y && x == point.X)
+                {
+                    continue;
+                }
+
+                neighbors.Add(new Point(x, y));
+            }
+        }
+
+        return neighbors;
     }
 
     public int NumberOfStraightNeighborsThatMatch(Point point, Func<T, T?, bool> matcher, T? outOfBoundsValue = default)
