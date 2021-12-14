@@ -88,3 +88,30 @@ public class Day14 : IMDay
             .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
     }
 }
+
+/*
+    Template:     NNCB
+    After step 1: NCNBCHB
+    After step 2: NBCCNBBBCBHCB
+
+    In pairs that is:
+    Template:     NN NC CB
+    After step 1: NC CN NB BC CH HB
+    After step 2: NB BC CC CN NB BB BB BC CB BH HC CB
+
+    NN translates to NCN which is NC CN in pairs (rule is NN -> C)
+    So each pair is 2 pairs in the next step.
+
+    First try:
+    - for each step, get the new pairs for each pair
+    - Is becoming slow around step 20
+    - Reason for this is that for every step it has to process twice as much pairs
+
+    Second try:
+    - for each step, get the unique pairs and count how many times they appear, for each unique pair get the new pairs and count those
+    - Because we're only iterating unique pairs this is way faster
+
+    Now that we have a result with the occurrences per pair, we can calculate the occurrences of a character.
+    We only need the first character of each pair since the last char is always the first char in another pair.
+    We shouldn't forget the last character of the template now since that is never the first character of a pair.
+*/
