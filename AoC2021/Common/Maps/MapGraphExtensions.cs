@@ -26,7 +26,7 @@ public static class MapGraphExtensions
             {
                 var nextCost = map.GetValue(nextPoint) + cost;
                 var currentCost = currentCostPerPoint.GetValue(nextPoint);
-                if (currentCost == 0 || nextCost < currentCostPerPoint.GetValue(nextPoint))
+                if (currentCost == 0 || nextCost < currentCost)
                 {
                     currentCostPerPoint.SetValue(nextPoint, nextCost);
                     openPositions.Enqueue(nextPoint, nextCost);
