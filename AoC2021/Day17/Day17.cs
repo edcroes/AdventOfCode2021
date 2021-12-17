@@ -36,6 +36,19 @@ public class Day17 : IMDay
     private static List<Point> GetVelocityCandidates(Rectangle bucket)
     {
         List<Point> candidates = new();
+        
+        // bucket.Right is far enough or you wil overshoot x with the first movement.
+        // bucket.Top (which is really the lowest point) is far enough since that will be the heighest y-velocity you can hit it.
+        // y-velocity of bucket.Top is also the one that gives the heighest top, since no matter how hard you throw y it will be 0 at some point coming down.
+        // The next step then is from zero to the lowest part of the bucket (assuming the bucket is always below 0).
+        //
+        //        .
+        //       . .
+        //      
+        //      .   .
+        // 
+        //
+        // 0 - .     .
 
         for (var x = 1; x <= bucket.Right; x++)
         {
