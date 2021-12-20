@@ -4,7 +4,7 @@ namespace AoC2021.Day17;
 
 public class Day17 : IMDay
 {
-    private static readonly Regex _bucketRegex = new Regex(@"^target area: x=(-?\d+)\.\.(-?\d+), y=(-?\d+)\.\.(-?\d+)\s*$"); 
+    private static readonly Regex _bucketRegex = new(@"^target area: x=(-?\d+)\.\.(-?\d+), y=(-?\d+)\.\.(-?\d+)\s*$"); 
     public string FilePath { private get; init; } = "Day17\\input.txt";
 
     public async Task<string> GetAnswerPart1()

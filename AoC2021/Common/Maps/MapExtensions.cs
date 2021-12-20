@@ -127,4 +127,42 @@ public static class MapExtensions
 
         return newMap;
     }
+
+    public static bool HasValueOnBorder<T>(this Map<T> map, T value) =>
+            map.GetLine(0, 0, map.SizeX - 1, 0).Contains(value) ||
+            map.GetLine(0, 0, 0, map.SizeY - 1).Contains(value) ||
+            map.GetLine(map.SizeX - 1, 0, map.SizeX - 1, map.SizeY - 1).Contains(value) ||
+            map.GetLine(0, map.SizeY - 1, map.SizeX - 1, map.SizeY - 1).Contains(value);
+
+    public static Map<T> EnlargeMapByOneOnEachSide<T>(this Map<T> map, T? valueForNewPoints) => EnlargeMap(map, map.SizeX + 2, map.SizeY + 2, valueForNewPoints);
+
+    public static Map<T> EnlargeMap<T>(this Map<T> map, int newSizeX, int newSizeY, T? valueForNewPoints)
+    {
+        if (newSizeX < map.SizeX || newSizeY < map.SizeY)
+        {
+            throw new ArgumentException($"{nameof(newSizeX)} and {nameof(newSizeY)} should be greater than or equal to the current size.");
+        }
+
+        Map<T> newMap = new(newSizeX, newSizeY);
+        var startX = (newSizeX - map.SizeX) / 2;
+        var startY = (newSizeY - map.SizeY) / 2;
+
+        if (valueForNewPoints is not null)
+        {
+            for (var y = 0; y < newMap.SizeY; y++)
+            {
+                for (var x = 0; x < newMap.SizeX; x++)
+                {
+                    if (x < startX || x >= startX + map.SizeX ||
+                        y < startY || y >= startY + map.SizeY)
+                    {
+                        newMap.SetValue(x, y, valueForNewPoints);
+                    }
+                }
+            }
+        }
+
+        map.CopyTo(newMap, new Point(startX, startY));
+        return newMap;
+    }
 }

@@ -275,4 +275,11 @@ public class Map<T>
     }
 
     public bool Contains(Point point) => point.X >= 0 && point.X < SizeX && point.Y >= 0 && point.Y < SizeY;
+
+    public Map<T> Clone()
+    {
+        Map<T> newMap = new(SizeX, SizeY);
+        this.CopyTo(newMap, new Point(0, 0));
+        return newMap;
+    }
 }
