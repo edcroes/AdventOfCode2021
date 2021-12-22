@@ -1,4 +1,4 @@
-﻿namespace AoC2021.Common.Maps;
+﻿namespace AoC2021.Common.Geometry;
 
 public struct Line
 {
