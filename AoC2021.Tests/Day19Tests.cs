@@ -1,5 +1,3 @@
-using AoC2021.Common.Maps;
-
 namespace AoC2021.Tests;
 
 [TestClass]
