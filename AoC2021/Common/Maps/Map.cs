@@ -25,6 +25,12 @@ public class Map<T>
         }
     }
 
+    public Map(T[,] grid)
+    {
+        _map = new T[grid.GetLength(0), grid.GetLength(1)];
+        Array.Copy(grid, _map, grid.Length);
+    }
+
     public T? GetValueOrDefault(Point point) => GetValueOrDefault(point.X, point.Y);
 
     public T? GetValueOrDefault(int x, int y, T? defaultValue = default)
@@ -278,8 +284,8 @@ public class Map<T>
 
     public Map<T> Clone()
     {
-        Map<T> newMap = new(SizeX, SizeY);
-        this.CopyTo(newMap, new Point(0, 0));
-        return newMap;
+        var newMapArray = new T[SizeX, SizeY];
+        Array.Copy(_map, newMapArray, _map.Length);
+        return new(newMapArray);
     }
 }
